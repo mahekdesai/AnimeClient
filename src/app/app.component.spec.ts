@@ -17,13 +17,13 @@ describe('AppComponent', () => {
   it(`should have the 'weatherClient' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('weatherClient');
+    expect(app.title).toEqual('animeClient');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, weatherClient');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, animeClient');
   });
 });

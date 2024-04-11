@@ -1,1 +1,23 @@
-<p>voice-actors works!</p>
+<h1>Voice Actors</h1>
+<table class="table table-striped">
+    <thead>
+        <tr> 
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (voiceActor of voiceActors; track $index) {
+            <tr>
+                <td>
+                    <a [routerLink] ="['/voiceActor-anime&characters', voiceActor.voiceAactorId]">
+                        {{voiceActor.voiceAactorId}}
+                    </a>
+                </td>
+                <td>{{voiceActor.voiceActorName}}</td>
+                <td><img [src]= voiceActor.voiceActorImage height="200" width="200"></td>
+            </tr>
+        }
+    </tbody>
+</table>

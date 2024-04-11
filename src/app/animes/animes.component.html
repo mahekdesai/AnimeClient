@@ -1,1 +1,23 @@
-<p>animes works!</p>
+<h1>Animes</h1>
+<table class="table table-striped">
+    <thead>
+        <tr> 
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (anime of animes; track $index) {
+            <tr>
+                <td>
+                    <a [routerLink] ="['/anime-voiceActors&characters', anime.animeId]">
+                        {{anime.animeId}}
+                    </a>
+                </td>
+                <td>{{anime.animeName}}</td>
+                <td><img [src]= anime.animeImage height="200" width="200"></td>
+            </tr>
+        }
+    </tbody>
+</table>

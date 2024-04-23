@@ -1,0 +1,49 @@
+<!-- voiceactors-characters.component.html -->
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="voiceactorsCharacters" class="mat-elevation-z8">
+      <!-- Voice Actor ID Column -->
+      <ng-container matColumnDef="voiceActorId">
+        <th mat-header-cell *matHeaderCellDef> Voice Actor ID </th>
+        <td mat-cell *matCellDef="let element"> {{ element.voiceActor.voiceActorId }} </td>
+      </ng-container>
+  
+      <!-- Voice Actor Name Column -->
+      <ng-container matColumnDef="voiceActorName">
+        <th mat-header-cell *matHeaderCellDef> Voice Actor Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.voiceActor.voiceActorName }} </td>
+      </ng-container>
+  
+      <!-- Voice Actor Image Column -->
+      <ng-container matColumnDef="voiceActorImage">
+        <th mat-header-cell *matHeaderCellDef> Voice Actor Image </th>
+        <td mat-cell *matCellDef="let element">
+          <img *ngIf="element.voiceActor.voiceActorImage" [src]="getFormattedImage(element.voiceActor.voiceActorImage)" alt="Voice Actor Image" height="200" width="200">
+        </td>
+      </ng-container>
+  
+      <!-- Character ID Column -->
+      <ng-container matColumnDef="characterId">
+        <th mat-header-cell *matHeaderCellDef> Character Played ID </th>
+        <td mat-cell *matCellDef="let element"> {{ element.character.characterId }} </td>
+      </ng-container>
+  
+      <!-- Character Name Column -->
+      <ng-container matColumnDef="characterName">
+        <th mat-header-cell *matHeaderCellDef> Character Played Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.character.characterName }} </td>
+      </ng-container>
+  
+      <!-- Character Image Column -->
+      <ng-container matColumnDef="characterImage">
+        <th mat-header-cell *matHeaderCellDef> Character Played Image </th>
+        <td mat-cell *matCellDef="let element">
+          <img *ngIf="element.character.characterImage" [src]="getFormattedImage(element.character.characterImage)" alt="Character Image" height="200" width="200">
+        </td>
+      </ng-container>
+  
+      <!-- Header and Rows Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  

@@ -11,12 +11,12 @@
         @for (character of characters; track $index) {
             <tr>
                 <td>
-                    <a [routerLink] ="['/character-voiceActors&animes', character.characterId]">
+                    <a [routerLink] ="['/characters/animesVoiceActors', character.characterId]">
                         {{character.characterId}}
                     </a>
                 </td>
                 <td>{{character.characterName}}</td>
-                <td><img [src]= character.characterImage height="200" width="200"></td>
+                <td><img [src]="getFormattedImage(character.characterImage)" alt="Character Image" height="200" width="200"></td>
             </tr>
         }
     </tbody>

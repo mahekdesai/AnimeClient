@@ -1,5 +1,5 @@
 export interface VoiceActor {
     voiceAactorId: number;
-    voiceActorName: String;
-    voiceActorImage: String;
+    voiceActorName: string;
+    voiceActorImage: string;
 }

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { VoiceActor } from './voice-actor';
+import { AuthenticationService } from '../auth/oktaauth.service';
 
 @Component({
   selector: 'app-voice-actors',
@@ -13,14 +14,16 @@ import { VoiceActor } from './voice-actor';
 })
 export class VoiceActorsComponent {
   public voiceActors: VoiceActor[] = [];
+  public isAuthorized : boolean = false;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private authService : AuthenticationService){}
 
       ngOnInit(){
-        this.getCountries();
+        this.getVoiceActors();
+        this.checkAuthorization();
       }
       
-      getCountries() {
+      getVoiceActors() {
         this.http.get<VoiceActor[]>(environment.baseUrl + 'api/VoiceActors').subscribe(
           {
             next: result => this.voiceActors = result,
@@ -34,5 +37,14 @@ export class VoiceActorsComponent {
           return image; // Image is already formatted correctly
         }
         return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+      }
+
+      checkAuthorization(): void {
+        console.log("IN ANIME COMPONENT")
+        this.isAuthorized = this.authService.isAuthorized();
+      }
+    
+      editEntries(): void {
+        console.log('EDIT ENTRIES----------------------');
       }
 }

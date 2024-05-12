@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Character } from './character';
+import { AuthenticationService } from '../auth/oktaauth.service';
 
 @Component({
   selector: 'app-characters',
@@ -13,14 +14,16 @@ import { Character } from './character';
 })
 export class CharactersComponent {
   public characters: Character[] = [];
+  public isAuthorized : boolean = false;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private authService : AuthenticationService){}
 
       ngOnInit(){
-        this.getCountries();
+        this.getCharacters();
+        this.checkAuthorization();
       }
       
-      getCountries() {
+      getCharacters() {
         this.http.get<Character[]>(environment.baseUrl + 'api/Characters').subscribe(
           {
             next: result => this.characters = result,
@@ -34,5 +37,14 @@ export class CharactersComponent {
           return image; // Image is already formatted correctly
         }
         return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+      }
+
+      checkAuthorization(): void {
+        console.log("IN ANIME COMPONENT")
+        this.isAuthorized = this.authService.isAuthorized();
+      }
+    
+      editEntries(): void {
+        console.log('EDIT ENTRIES----------------------');
       }
 }

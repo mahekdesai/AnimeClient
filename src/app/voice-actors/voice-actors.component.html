@@ -1,4 +1,7 @@
 <h1>Voice Actors</h1>
+@if(isAuthorized) {
+    <button class="edit-button" (click)="editEntries()">Edit</button>
+}
 <table class="table table-striped">
     <thead>
         <tr> 

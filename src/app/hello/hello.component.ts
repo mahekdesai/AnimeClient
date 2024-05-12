@@ -15,28 +15,10 @@ interface WeatherForecast {
   templateUrl: './hello.component.html',
   styleUrl: './hello.component.css'
 })
-export class HelloComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-  baseUrl = "http://localhost:2996/"
-  //5197
+export class HelloComponent {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>(this.baseUrl + 'weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  title = 'weatherClient';
+  title = 'home';
 
 }

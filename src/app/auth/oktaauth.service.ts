@@ -43,7 +43,6 @@ export class AuthenticationService {
       if (tokens?.tokens?.accessToken && tokens?.tokens?.idToken) {
         this._setAuthStatus(true);
         localStorage.setItem(this.tokenKey, tokens.tokens.accessToken.accessToken);
-        console.log("ACCESS TOKEN------------->" + localStorage.getItem(this.tokenKey));
         return null;
       } else {
         this._setAuthStatus(false);
@@ -79,26 +78,19 @@ export class AuthenticationService {
   }
 
   isAuthorized(): boolean {
-    const accessToken = localStorage.getItem(this.tokenKey); // Change to access token
+    const accessToken = localStorage.getItem(this.tokenKey);
     if (!accessToken) {
         return false;
     }
-
-    // Split the token into its three parts: header, payload, signature
     const tokenParts = accessToken.split('.');
 
-    // The payload is the second part of the token
     const encodedPayload = tokenParts[1];
 
-    // Decode the base64-encoded payload
     const decodedPayload = atob(encodedPayload);
 
-    // Parse the decoded payload as JSON
     const payloadObject = JSON.parse(decodedPayload);
-    console.log('Decoded Payload:', JSON.parse(decodedPayload));
 
-    // Check if the 'animeClaim' claim exists and if the 'adminGroup' is included
-    const userGroups: string[] = payloadObject.animeClaim || []; // Change to 'animeClaim'
+    const userGroups: string[] = payloadObject.animeClaim || [];
     return userGroups.includes('adminGroup');
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { MatTableModule } from '@angular/material/table'; // Make sure this is imported
+import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 
@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment.development';
   styleUrls: ['./voiceactors-characters.component.scss']
 })
 export class VoiceactorsCharactersComponent implements OnInit {
-  public voiceactorsCharacters: any[] = []; // Adjust the type according to your data model
+  public voiceactorsCharacters: any[] = [];
   public displayedColumns: string[] = ['voiceActorId', 'voiceActorName', 'voiceActorImage', 'characterId', 'characterName', 'characterImage'];
   private id: number = 0;
 
@@ -35,8 +35,8 @@ export class VoiceactorsCharactersComponent implements OnInit {
 
   getFormattedImage(image: string): string {
     if (image.startsWith('data:image')) {
-      return image; // Image is already formatted correctly
+      return image;
     }
-    return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+    return `data:image/jpeg;base64,${image}`;
   }
 }

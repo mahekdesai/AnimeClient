@@ -34,17 +34,12 @@ export class VoiceActorsComponent {
 
       getFormattedImage(image: string): string {
         if (image.startsWith('data:image')) {
-          return image; // Image is already formatted correctly
+          return image; 
         }
-        return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+        return `data:image/jpeg;base64,${image}`;
       }
 
       checkAuthorization(): void {
-        console.log("IN ANIME COMPONENT")
         this.isAuthorized = this.authService.isAuthorized();
-      }
-    
-      editEntries(): void {
-        console.log('EDIT ENTRIES----------------------');
       }
 }

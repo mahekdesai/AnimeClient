@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../environments/environment.development';
 import { Anime } from './anime';
 import { AuthenticationService } from '../auth/oktaauth.service';
@@ -16,7 +16,7 @@ export class AnimesComponent implements OnInit {
   public animes: Anime[] = [];
   public isAuthorized : boolean = false;
 
-  constructor(private http: HttpClient, private authService : AuthenticationService) {}
+  constructor(private http: HttpClient, private authService : AuthenticationService, private router : Router) {}
 
   ngOnInit() {
     this.getAnimes();
@@ -32,17 +32,12 @@ export class AnimesComponent implements OnInit {
 
   getFormattedImage(image: string): string {
     if (image.startsWith('data:image')) {
-      return image; // Image is already formatted correctly
+      return image;
     }
-    return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+    return `data:image/jpeg;base64,${image}`;
   }
 
   checkAuthorization(): void {
-    console.log("IN ANIME COMPONENT")
     this.isAuthorized = this.authService.isAuthorized();
-  }
-
-  editEntries(): void {
-    console.log('EDIT ENTRIES----------------------');
   }
 }

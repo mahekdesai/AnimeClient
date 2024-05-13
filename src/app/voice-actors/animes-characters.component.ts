@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { MatTableModule } from '@angular/material/table'; // Make sure this is imported
+import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'app-animes-characters',
   standalone: true,
-  imports: [CommonModule, // Import CommonModule for *ngIf and other common directives
+  imports: [CommonModule,
   MatTableModule],
   templateUrl: './animes-characters.component.html',
   styleUrl: './animes-characters.component.scss'
 })
 export class AnimesCharactersComponent implements OnInit{
-  public animesCharacters: any[] = []; // Adjust the type according to your data model
+  public animesCharacters: any[] = [];
   public displayedColumns: string[] = ['animeId', 'animeName', 'animeImage', 'characterId', 'characterName', 'characterImage'];
   private id: number = 0;
 
@@ -36,8 +36,8 @@ export class AnimesCharactersComponent implements OnInit{
 
   getFormattedImage(image: string): string {
     if (image.startsWith('data:image')) {
-      return image; // Image is already formatted correctly
+      return image;
     }
-    return `data:image/jpeg;base64,${image}`; // Adjust the MIME type as needed
+    return `data:image/jpeg;base64,${image}`;
   }
 }

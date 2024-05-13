@@ -1,7 +1,23 @@
 <h1>Animes</h1>
 @if(isAuthorized) {
-    <button class="edit-button">You are Authorized</button>
+    <button class="edit-button" (click)="showAddAnimeForm()">Add New Anime</button>
 }
+
+@if(showForm){
+    <div>
+        <h2>Add New Anime</h2>
+  <form (ngSubmit)="addNewAnime()" enctype="multipart/form-data">
+    <label for="animeName">Anime Name:</label>
+    <input type="text" id="animeName" name="animeName" [(ngModel)]="newAnime.animeName" required>
+
+    <label for="animeImage">Anime Image (allowed file types: JPG, JPEG):</label>
+    <input type="file" id="animeImage" name="animeImage" accept="image/jpeg,image/jpg" (change)="handleFileInput($event)" required>
+
+    <button type="submit">Submit</button>
+  </form>
+    </div>
+}
+
 <table class="table table-striped">
     <thead>
         <tr> 

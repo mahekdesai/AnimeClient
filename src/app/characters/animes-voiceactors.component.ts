@@ -4,11 +4,20 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment.development';
+import { FormsModule } from '@angular/forms';
+import { AuthenticationService } from '../auth/oktaauth.service';
+
+interface NewAnimeVoiceactor {
+  animeName: string;
+  animeImage: File | null;
+  voiceActorName: string;
+  voiceActorImage: File | null;
+}
 
 @Component({
   selector: 'app-animes-voiceactors',
   standalone: true,
-  imports: [CommonModule,MatTableModule],
+  imports: [CommonModule,MatTableModule, FormsModule],
   templateUrl: './animes-voiceactors.component.html',
   styleUrl: './animes-voiceactors.component.scss'
 })
@@ -16,14 +25,23 @@ export class AnimesVoiceactorsComponent implements OnInit{
   public animeVoiceactors: any[] = [];
   public displayedColumns: string[] = ['animeId', 'animeName', 'animeImage','voiceActorId', 'voiceActorName', 'voiceActorImage'];
   private id: number = 0;
+  public isAuthorized : boolean = false;
+  public showForm: boolean = false;
+  public newAnimeVoiceactor: NewAnimeVoiceactor = {
+    animeName: '',
+    animeImage: null,
+    voiceActorName: '',
+    voiceActorImage: null
+  }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthenticationService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id')!;
       this.getAnimesVoiceactors();
     });
+    this.checkAuthorization();
   }
 
   getAnimesVoiceactors(): void {
@@ -38,6 +56,54 @@ export class AnimesVoiceactorsComponent implements OnInit{
       return image; 
     }
     return `data:image/jpeg;base64,${image}`;
+  }
+
+  checkAuthorization(): void {
+    this.isAuthorized = this.authService.isAuthorized();
+  }
+
+  showAddAnimeVoiceactorForm(): void {
+    this.showForm = true;
+  }
+
+  handleAnimeFileInput(event: any): void {
+    const file = event.target.files[0];
+    this.newAnimeVoiceactor.animeImage = file;
+  }
+
+  handleVoiceActorFileInput(event: any): void {
+    const file = event.target.files[0];
+    this.newAnimeVoiceactor.voiceActorImage = file;
+  }
+
+  addNewAnimeVoiceactor(): void {
+    const formData = new FormData();
+    formData.append('animeName', this.newAnimeVoiceactor.animeName);
+    if(this.newAnimeVoiceactor.animeImage){
+      formData.append('animeImage', this.newAnimeVoiceactor.animeImage);
+    }
+    formData.append('voiceActorName', this.newAnimeVoiceactor.voiceActorName);
+    if(this.newAnimeVoiceactor.voiceActorImage){
+      formData.append('voiceActorImage', this.newAnimeVoiceactor.voiceActorImage);
+    }
+
+    this.http.post(environment.baseUrl + `api/Characters/${this.id}/AddAnimeVoiceactor`, formData).subscribe({
+      next: () => {
+        this.getAnimesVoiceactors();
+        this.newAnimeVoiceactor = {
+          animeName: '',
+          animeImage: null,
+          voiceActorName: '',
+          voiceActorImage: null
+        };
+        this.showForm = false;
+      },
+      error: (error) => console.error(error),
+    });
+  }
+
+  onFormCancel(){
+    this.showForm = false;
   }
 }
 

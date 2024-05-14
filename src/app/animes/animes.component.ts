@@ -76,4 +76,8 @@ export class AnimesComponent implements OnInit {
       error: (error) => console.error(error),
     });
   }
+
+  onFormCancel(){
+    this.showForm = false;
+  }
 }

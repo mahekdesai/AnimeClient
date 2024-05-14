@@ -4,17 +4,28 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Character } from './character';
 import { AuthenticationService } from '../auth/oktaauth.service';
+import { FormsModule } from '@angular/forms';
+
+interface NewCharacter {
+  characterName: string;
+  characterImage: File | null;
+}
 
 @Component({
   selector: 'app-characters',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './characters.component.html',
   styleUrl: './characters.component.scss'
 })
 export class CharactersComponent {
   public characters: Character[] = [];
   public isAuthorized : boolean = false;
+  public showForm: boolean = false;
+  public newCharacter: NewCharacter = {
+    characterName: '',
+    characterImage: null,
+  }
 
   constructor(private http: HttpClient, private authService : AuthenticationService){}
 
@@ -41,5 +52,34 @@ export class CharactersComponent {
 
       checkAuthorization(): void {
         this.isAuthorized = this.authService.isAuthorized();
+      }
+
+      showAddCharacterForm(): void {
+        this.showForm = true;
+      }
+    
+      handleFileInput(event: any): void {
+        const file = event.target.files[0];
+        this.newCharacter.characterImage = file;
+      }
+    
+      addNewCharacter(): void {
+        const formData = new FormData();
+        formData.append('characterName', this.newCharacter.characterName);
+        if (this.newCharacter.characterImage) {
+          formData.append('characterImage', this.newCharacter.characterImage);
+        }
+    
+        this.http.post(environment.baseUrl + 'api/Characters', formData).subscribe({
+          next: () => {
+            this.getCharacters();
+            this.showForm = false;
+          },
+          error: (error) => console.error(error),
+        });
+      }
+
+      onFormCancel(){
+        this.showForm = false;
       }
 }

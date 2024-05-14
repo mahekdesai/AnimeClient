@@ -1,3 +1,35 @@
+@if(isAuthorized) {
+  <button class="edit-button" (click)="showAddVoiceactorCharacterForm()">Add New Voice Actor & Character</button>
+  <br>
+}
+
+@if(showForm){
+  <div>
+      <h2>Add New Voice Actor For This Anime</h2>
+<form (ngSubmit)="addNewVoiceactorCharacter()" enctype="multipart/form-data">
+  <label for="voiceActorName">Voice Actor Name:</label>
+  <input type="text" id="voiceActorName" name="voiceActorName" [(ngModel)]="newVoiceactorCharacter.voiceActorName" required>
+  <br>
+
+  <label for="voiceActorImage">Voice Actor Image (allowed file types: JPG, JPEG):</label>
+  <input type="file" id="voiceActorImage" name="voiceActorImage" accept="image/jpeg,image/jpg" (change)="handleVoiceActorFileInput($event)" required>
+  <br><br>
+
+  <h2>Add New Character For This Anime</h2>
+  <label for="characterName">Character Name:</label>
+  <input type="text" id="characterName" name="characterName" [(ngModel)]="newVoiceactorCharacter.characterName" required>
+  <br>
+
+  <label for="characterImage">Character Image (allowed file types: JPG, JPEG):</label>
+  <input type="file" id="characterImage" name="characterImage" accept="image/jpeg,image/jpg" (change)="handleCharacterFileInput($event)" required>
+  <br>
+
+  <button type="submit">Submit</button>
+  <button (click)="onFormCancel()">Cancel</button>
+</form>
+  </div>
+  <br>
+}
 <!-- voiceactors-characters.component.html -->
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="voiceactorsCharacters" class="mat-elevation-z8">

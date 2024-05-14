@@ -27,6 +27,7 @@ export class AnimesVoiceactorsComponent implements OnInit{
   private id: number = 0;
   public isAuthorized : boolean = false;
   public showForm: boolean = false;
+  public showIncompleteFieldsError: boolean = false;
   public newAnimeVoiceactor: NewAnimeVoiceactor = {
     animeName: '',
     animeImage: null,
@@ -77,6 +78,10 @@ export class AnimesVoiceactorsComponent implements OnInit{
   }
 
   addNewAnimeVoiceactor(): void {
+    if (!this.newAnimeVoiceactor.animeName || !this.newAnimeVoiceactor.animeImage || !this.newAnimeVoiceactor.voiceActorName || !this.newAnimeVoiceactor.voiceActorImage) {
+      this.showIncompleteFieldsError = true;
+      return;
+    }
     const formData = new FormData();
     formData.append('animeName', this.newAnimeVoiceactor.animeName);
     if(this.newAnimeVoiceactor.animeImage){

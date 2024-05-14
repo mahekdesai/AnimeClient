@@ -15,6 +15,12 @@
     <input type="file" id="characterImage" name="characterImage" accept="image/jpeg,image/jpg" (change)="handleFileInput($event)" required>
     <br>
 
+    @if(showIncompleteFieldsError){
+        <div>
+          <h2> Please fill in all fields. </h2>
+        </div>
+      }
+
     <button type="submit">Submit</button>
     <button (click)="onFormCancel()">Cancel</button>
   </form>

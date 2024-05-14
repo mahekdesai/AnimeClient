@@ -22,6 +22,7 @@ export class CharactersComponent {
   public characters: Character[] = [];
   public isAuthorized : boolean = false;
   public showForm: boolean = false;
+  public showIncompleteFieldsError: boolean = false;
   public newCharacter: NewCharacter = {
     characterName: '',
     characterImage: null,
@@ -64,6 +65,10 @@ export class CharactersComponent {
       }
     
       addNewCharacter(): void {
+        if (!this.newCharacter.characterName || !this.newCharacter.characterImage) {
+          this.showIncompleteFieldsError = true;
+          return;
+        }
         const formData = new FormData();
         formData.append('characterName', this.newCharacter.characterName);
         if (this.newCharacter.characterImage) {

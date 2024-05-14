@@ -27,6 +27,7 @@ export class VoiceactorsCharactersComponent implements OnInit {
   private id: number = 0;
   public isAuthorized : boolean = false;
   public showForm: boolean = false;
+  public showIncompleteFieldsError: boolean = false;
   public newVoiceactorCharacter: NewVoiceactorCharacter = {
     characterName: '',
     characterImage: null,
@@ -77,6 +78,10 @@ export class VoiceactorsCharactersComponent implements OnInit {
   }
 
   addNewVoiceactorCharacter(): void {
+    if (!this.newVoiceactorCharacter.characterName || !this.newVoiceactorCharacter.characterImage || !this.newVoiceactorCharacter.voiceActorName || !this.newVoiceactorCharacter.voiceActorImage) {
+      this.showIncompleteFieldsError = true;
+      return;
+    }
     const formData = new FormData();
     formData.append('characterName', this.newVoiceactorCharacter.characterName);
     if(this.newVoiceactorCharacter.characterImage){

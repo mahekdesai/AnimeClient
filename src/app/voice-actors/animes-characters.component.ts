@@ -28,6 +28,7 @@ export class AnimesCharactersComponent implements OnInit{
   private id: number = 0;
   public isAuthorized : boolean = false;
   public showForm: boolean = false;
+  public showIncompleteFieldsError: boolean = false;
   public newAnimeCharacter: NewAnimeCharacter = {
     animeName: '',
     animeImage: null,
@@ -78,6 +79,10 @@ export class AnimesCharactersComponent implements OnInit{
   }
 
   addNewAnimeCharacter(): void {
+    if (!this.newAnimeCharacter.animeName || !this.newAnimeCharacter.animeImage || !this.newAnimeCharacter.characterName || !this.newAnimeCharacter.characterImage) {
+      this.showIncompleteFieldsError = true;
+      return;
+    }
     const formData = new FormData();
     formData.append('animeName', this.newAnimeCharacter.animeName);
     if(this.newAnimeCharacter.animeImage){

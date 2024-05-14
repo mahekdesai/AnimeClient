@@ -22,6 +22,7 @@ export class VoiceActorsComponent {
   public voiceActors: VoiceActor[] = [];
   public isAuthorized : boolean = false;
   public showForm: boolean = false;
+  public showIncompleteFieldsError: boolean = false;
   public newVoiceActor: NewVoiceActor = {
     voiceActorName: '',
     voiceActorImage: null,
@@ -64,6 +65,10 @@ export class VoiceActorsComponent {
       }
     
       addNewVoiceActor(): void {
+        if (!this.newVoiceActor.voiceActorName || !this.newVoiceActor.voiceActorImage) {
+          this.showIncompleteFieldsError = true;
+          return;
+        }
         const formData = new FormData();
         formData.append('voiceActorName', this.newVoiceActor.voiceActorName);
         if (this.newVoiceActor.voiceActorImage) {

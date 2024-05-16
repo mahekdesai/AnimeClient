@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment.development';
-import { AuthenticationService } from '../auth/oktaauth.service';
+import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 interface NewVoiceactorCharacter {
   characterName: string;
@@ -35,7 +35,7 @@ export class VoiceactorsCharactersComponent implements OnInit {
     voiceActorImage: null
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthenticationService) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -60,11 +60,12 @@ export class VoiceactorsCharactersComponent implements OnInit {
   }
 
   checkAuthorization(): void {
-    this.isAuthorized = this.authService.isAuthorized();
+    this.isAuthorized = this.authService.isAuthenticated();
   }
 
   showAddVoiceactorCharacterForm(): void {
     this.showForm = true;
+    this.showIncompleteFieldsError=false;
   }
 
   handleCharacterFileInput(event: any): void {
@@ -102,6 +103,10 @@ export class VoiceactorsCharactersComponent implements OnInit {
           voiceActorImage: null
         };
         this.showForm = false;
+        this.newVoiceactorCharacter.voiceActorName='';
+        this.newVoiceactorCharacter.voiceActorImage=null;
+        this.newVoiceactorCharacter.characterImage=null;
+        this.newVoiceactorCharacter.characterName='';
       },
       error: (error) => console.error(error),
     });
@@ -109,5 +114,9 @@ export class VoiceactorsCharactersComponent implements OnInit {
 
   onFormCancel(){
     this.showForm = false;
+    this.newVoiceactorCharacter.voiceActorName = '';
+    this.newVoiceactorCharacter.voiceActorImage = null;
+    this.newVoiceactorCharacter.characterImage=null;
+    this.newVoiceactorCharacter.characterName='';
   }
 }

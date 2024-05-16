@@ -1,12 +1,12 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
 import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthenticationService } from './oktaauth.service';
 
-export const oktaauthInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthenticationService);
-  const authToken = localStorage.getItem('tokenKey');
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const authToken = authService.getToken();
   const router = inject(Router);
   if(authToken){
     const newReq = req.clone({
@@ -20,7 +20,7 @@ export const oktaauthInterceptor: HttpInterceptorFn = (req, next) => {
     catchError(error => 
       {
         if(error instanceof HttpErrorResponse && error.status === 401){
-          authService.login();
+          router.navigate(['login']);
         }
         return throwError(() => error);
       }

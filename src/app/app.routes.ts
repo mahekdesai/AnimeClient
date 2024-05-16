@@ -7,11 +7,15 @@ import { VoiceactorsCharactersComponent } from './animes/voiceactors-characters.
 import { AnimesVoiceactorsComponent } from './characters/animes-voiceactors.component';
 import { AnimesCharactersComponent } from './voice-actors/animes-characters.component';
 import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
+import { LoginComponent } from './auth/login.component';
 import { CallbackComponent } from './callback/callback.component';
+import { RegisterComponent } from './auth/register.component';
 
 export const routes: Routes = [
     {path : '', component : HelloComponent, pathMatch : 'full'},
-    {path : 'callback', component: CallbackComponent},
+    {path : 'login', component : LoginComponent},
+    {path : 'register', component : RegisterComponent},
+    {path : 'callback', component : CallbackComponent},
     {path : 'animes', component : AnimesComponent},
     {path : 'voice-actors', component : VoiceActorsComponent},
     {path : 'characters', component : CharactersComponent},

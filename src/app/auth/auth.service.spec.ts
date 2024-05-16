@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthenticationService } from './oktaauth.service';
 
-describe('OktaauthService', () => {
-  let service: AuthenticationService;
+import { AuthService } from './auth.service';
+
+describe('AuthService', () => {
+  let service: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthenticationService);
+    service = TestBed.inject(AuthService);
   });
 
   it('should be created', () => {

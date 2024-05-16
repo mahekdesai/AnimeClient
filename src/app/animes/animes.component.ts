@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Anime } from './anime';
-import { AuthenticationService } from '../auth/oktaauth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 interface NewAnime {
   animeName: string;
@@ -28,7 +28,7 @@ export class AnimesComponent implements OnInit {
     animeImage: null,
   }
 
-  constructor(private http: HttpClient, private authService : AuthenticationService, private router : Router) {}
+  constructor(private http: HttpClient, private authService : AuthService, private router : Router) {}
 
   ngOnInit() {
     this.getAnimes();
@@ -50,11 +50,12 @@ export class AnimesComponent implements OnInit {
   }
 
   checkAuthorization(): void {
-    this.isAuthorized = this.authService.isAuthorized();
+    this.isAuthorized = this.authService.isAuthenticated();
   }
 
   showAddAnimeForm(): void {
     this.showForm = true;
+    this.showIncompleteFieldsError=false;
   }
 
   handleFileInput(event: any): void {
@@ -77,6 +78,8 @@ export class AnimesComponent implements OnInit {
       next: () => {
         this.getAnimes();
         this.showForm = false;
+        this.newAnime.animeName='';
+        this.newAnime.animeImage=null;
       },
       error: (error) => console.error(error),
     });
@@ -84,5 +87,7 @@ export class AnimesComponent implements OnInit {
 
   onFormCancel(){
     this.showForm = false;
+    this.newAnime.animeName='';
+    this.newAnime.animeImage=null;
   }
 }

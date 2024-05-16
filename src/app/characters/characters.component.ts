@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Character } from './character';
-import { AuthenticationService } from '../auth/oktaauth.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 interface NewCharacter {
   characterName: string;
@@ -28,7 +28,7 @@ export class CharactersComponent {
     characterImage: null,
   }
 
-  constructor(private http: HttpClient, private authService : AuthenticationService){}
+  constructor(private http: HttpClient, private authService : AuthService){}
 
       ngOnInit(){
         this.getCharacters();
@@ -52,11 +52,12 @@ export class CharactersComponent {
       }
 
       checkAuthorization(): void {
-        this.isAuthorized = this.authService.isAuthorized();
+        this.isAuthorized = this.authService.isAuthenticated();
       }
 
       showAddCharacterForm(): void {
         this.showForm = true;
+        this.showIncompleteFieldsError = false;
       }
     
       handleFileInput(event: any): void {
@@ -79,6 +80,8 @@ export class CharactersComponent {
           next: () => {
             this.getCharacters();
             this.showForm = false;
+            this.newCharacter.characterName = '';
+            this.newCharacter.characterImage = null;
           },
           error: (error) => console.error(error),
         });
@@ -86,5 +89,7 @@ export class CharactersComponent {
 
       onFormCancel(){
         this.showForm = false;
+        this.newCharacter.characterName = '';
+        this.newCharacter.characterImage = null;
       }
 }

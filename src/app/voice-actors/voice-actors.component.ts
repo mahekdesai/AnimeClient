@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { VoiceActor } from './voice-actor';
-import { AuthenticationService } from '../auth/oktaauth.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 interface NewVoiceActor {
   voiceActorName: string;
@@ -28,7 +28,7 @@ export class VoiceActorsComponent {
     voiceActorImage: null,
   }
 
-  constructor(private http: HttpClient, private authService : AuthenticationService){}
+  constructor(private http: HttpClient, private authService : AuthService){}
 
       ngOnInit(){
         this.getVoiceActors();
@@ -52,10 +52,11 @@ export class VoiceActorsComponent {
       }
 
       checkAuthorization(): void {
-        this.isAuthorized = this.authService.isAuthorized();
+        this.isAuthorized = this.authService.isAuthenticated();
       }
 
       showAddVoiceActorForm(): void {
+        this.showIncompleteFieldsError = false;
         this.showForm = true;
       }
     
@@ -79,6 +80,8 @@ export class VoiceActorsComponent {
           next: () => {
             this.getVoiceActors();
             this.showForm = false;
+            this.newVoiceActor.voiceActorName='';
+            this.newVoiceActor.voiceActorImage=null;
           },
           error: (error) => console.error(error),
         });
@@ -86,5 +89,7 @@ export class VoiceActorsComponent {
 
       onFormCancel(){
         this.showForm = false;
+        this.newVoiceActor.voiceActorName='';
+        this.newVoiceActor.voiceActorImage=null;
       }
 }

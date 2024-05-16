@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from '../auth/oktaauth.service';
+import { AuthService } from '../auth/auth.service';
 
 interface NewAnimeVoiceactor {
   animeName: string;
@@ -35,7 +35,7 @@ export class AnimesVoiceactorsComponent implements OnInit{
     voiceActorImage: null
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthenticationService) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -60,11 +60,12 @@ export class AnimesVoiceactorsComponent implements OnInit{
   }
 
   checkAuthorization(): void {
-    this.isAuthorized = this.authService.isAuthorized();
+    this.isAuthorized = this.authService.isAuthenticated();
   }
 
   showAddAnimeVoiceactorForm(): void {
     this.showForm = true;
+    this.showIncompleteFieldsError=false;
   }
 
   handleAnimeFileInput(event: any): void {
@@ -102,6 +103,10 @@ export class AnimesVoiceactorsComponent implements OnInit{
           voiceActorImage: null
         };
         this.showForm = false;
+        this.newAnimeVoiceactor.animeName='';
+        this.newAnimeVoiceactor.animeImage=null;
+        this.newAnimeVoiceactor.voiceActorImage=null;
+        this.newAnimeVoiceactor.voiceActorName='';
       },
       error: (error) => console.error(error),
     });
@@ -109,6 +114,10 @@ export class AnimesVoiceactorsComponent implements OnInit{
 
   onFormCancel(){
     this.showForm = false;
+    this.newAnimeVoiceactor.animeName='';
+    this.newAnimeVoiceactor.animeImage=null;
+    this.newAnimeVoiceactor.voiceActorImage=null;
+    this.newAnimeVoiceactor.voiceActorName='';
   }
 }
 

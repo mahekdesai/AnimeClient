@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from '../auth/oktaauth.service';
+import { AuthService } from '../auth/auth.service';
 
 interface NewAnimeCharacter {
   animeName: string;
@@ -36,7 +36,7 @@ export class AnimesCharactersComponent implements OnInit{
     characterImage: null
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthenticationService) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private authService : AuthService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -61,11 +61,12 @@ export class AnimesCharactersComponent implements OnInit{
   }
 
   checkAuthorization(): void {
-    this.isAuthorized = this.authService.isAuthorized();
+    this.isAuthorized = this.authService.isAuthenticated();
   }
 
   showAddAnimeCharacterForm(): void {
     this.showForm = true;
+    this.showIncompleteFieldsError=false;
   }
 
   handleAnimeFileInput(event: any): void {
@@ -103,6 +104,10 @@ export class AnimesCharactersComponent implements OnInit{
           characterImage: null
         };
         this.showForm = false;
+        this.newAnimeCharacter.animeName='';
+        this.newAnimeCharacter.animeImage=null;
+        this.newAnimeCharacter.characterName='';
+        this.newAnimeCharacter.characterImage=null;
       },
       error: (error) => console.error(error),
     });
@@ -110,5 +115,9 @@ export class AnimesCharactersComponent implements OnInit{
 
   onFormCancel(){
     this.showForm = false;
+    this.newAnimeCharacter.animeName='';
+    this.newAnimeCharacter.animeImage=null;
+    this.newAnimeCharacter.characterName='';
+    this.newAnimeCharacter.characterImage=null;
   }
 }
